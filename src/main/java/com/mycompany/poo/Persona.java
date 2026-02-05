@@ -11,25 +11,32 @@ package com.mycompany.poo;
 import java.util.Objects;
 
 public class Persona {
+    
+    private static int personasCreadas = 0;
 
     // Atributos
     private String nombre;
     private String apellidos;
     private int edad;
+    private Direccion direccion;
 
     // Constructores
     // Constructor vacio
     public Persona() {
-        this("", "", 0); // llamamos al constructor por defecto
+        this("", "", 0, new Direccion()); // llamamos al constructor por defecto
     }
 
     public Persona(String nombre) {
-        this(nombre, "", 0); // llamamos al constructor por defecto
+        this(nombre, "", 0, new Direccion()); // llamamos al constructor por defecto
     }
 
     // Constructor por defecto
-    public Persona(String nombre, String apellidos, int edad) {
+    public Persona(String nombre, String apellidos, int edad, Direccion direccion) {
 
+        if (direccion == null ){
+             throw new IllegalArgumentException("La edad debe ser positiva");
+        }
+        
         // valida la edad
         if (edad < 0) {
             throw new IllegalArgumentException("La edad debe ser positiva");
@@ -39,6 +46,9 @@ public class Persona {
         this.nombre = nombre;
         this.apellidos = apellidos;
         this.edad = edad;
+        this.direccion = direccion;
+        Persona.personasCreadas ++;
+        System.out.println("Numero de personas creadas: " + personasCreadas);
     }
 
     // Getters y setters
@@ -62,6 +72,16 @@ public class Persona {
         return edad;
     }
 
+    public static int getPersonasCreadas() {
+        return personasCreadas;
+    }
+    
+    public  static String obtenerPersonas(){
+        return "Se han creado un total de " + personasCreadas  + " personas";
+        
+    }
+            
+            
     public void setEdad(int edad) {
         if (edad < 0) {
             throw new IllegalArgumentException("La edad debe ser positiva");
@@ -87,7 +107,7 @@ public class Persona {
     // Muestra la informacion de la persona formateada a nuestro gusto
     @Override
     public String toString() {
-        return this.nombreCompleto() + " de " + edad + " años";
+        return this.nombreCompleto() + " de " + edad + " años con direccion " + this.direccion.toString();
     }
 
     // Genrar un codigo hash
@@ -116,6 +136,10 @@ public class Persona {
             return false;
         }
         return Objects.equals(this.apellidos, other.apellidos);
+    }
+    
+    public double sueldo(){
+        return 0;
     }
 
 }
